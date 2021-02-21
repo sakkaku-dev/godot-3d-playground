@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/DefaultBot.gd" type="Script" id=1]
 [ext_resource path="res://assets/ybot/yBot.gltf" type="PackedScene" id=2]
@@ -16,6 +16,13 @@ animation = "Run"
 [sub_resource type="AnimationNodeAnimation" id=4]
 animation = "Walk"
 
+[sub_resource type="AnimationNodeTransition" id=7]
+input_count = 2
+input_0/name = "walk"
+input_0/auto_advance = false
+input_1/name = "run"
+input_1/auto_advance = false
+
 [sub_resource type="AnimationNodeBlendTree" id=1]
 graph_offset = Vector2( -522, -88 )
 nodes/Idle/node = SubResource( 3 )
@@ -23,11 +30,13 @@ nodes/Idle/position = Vector2( -320, 0 )
 nodes/Move/node = SubResource( 5 )
 nodes/Move/position = Vector2( 60, 40 )
 nodes/Run/node = SubResource( 6 )
-nodes/Run/position = Vector2( -320, 260 )
+nodes/Run/position = Vector2( -320, 220 )
 nodes/Walk/node = SubResource( 4 )
-nodes/Walk/position = Vector2( -320, 160 )
+nodes/Walk/position = Vector2( -320, 120 )
+nodes/WalkRun/node = SubResource( 7 )
+nodes/WalkRun/position = Vector2( -120, 120 )
 nodes/output/position = Vector2( 360, 60 )
-node_connections = [ "output", 0, "Move", "Move", 0, "Idle" ]
+node_connections = [ "output", 0, "Move", "Move", 0, "Idle", "Move", 1, "WalkRun" ]
 
 [sub_resource type="CapsuleShape" id=2]
 radius = 0.325762
@@ -40,6 +49,7 @@ tree_root = SubResource( 1 )
 anim_player = NodePath("../yBot/AnimationPlayer")
 active = true
 parameters/Move/blend_amount = 0
+parameters/WalkRun/current = 0
 
 [node name="yBot" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 3.12639e-13, 0, -3.12639e-13, 1, 0, 0, 1.13687e-13 )

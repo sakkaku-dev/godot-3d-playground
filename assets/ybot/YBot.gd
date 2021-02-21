@@ -16,9 +16,6 @@ var velocity = Vector3.ZERO
 var orientation = Transform()
 
 func _physics_process(delta):
-	var x: AnimationNodeBlendTree = $AnimationTree
-	x.
-	
 	var motion = input.get_move_vector()
 	var target = camera.target_direction_for_motion(motion)
 	if target.length() > 0.01:
