@@ -6,8 +6,6 @@ Input Reader for a single player
 
 class_name PlayerInput
 
-const MOVE_INPUTS = ["move_left", "move_right", "move_back", "move_forward"]
-
 export var joypad_input = false
 export var device_id = 0
 

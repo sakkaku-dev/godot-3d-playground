@@ -1,13 +1,9 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/DefaultBot.gd" type="Script" id=1]
 [ext_resource path="res://assets/ybot/yBot.gltf" type="PackedScene" id=2]
 [ext_resource path="res://assets/ybot/YBot.gd" type="Script" id=3]
 [ext_resource path="res://scripts/input/PlayerInput.gd" type="Script" id=4]
-[ext_resource path="res://scenes/Camera.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scripts/state_machine/StateMachine.gd" type="Script" id=6]
-[ext_resource path="res://scripts/states/Idle.gd" type="Script" id=7]
-[ext_resource path="res://scripts/states/Move.gd" type="Script" id=8]
 
 [sub_resource type="AnimationNodeAnimation" id=1]
 animation = "Idle"
@@ -47,7 +43,6 @@ radius = 0.325762
 
 [node name="YBot" type="KinematicBody"]
 script = ExtResource( 3 )
-camera_path = NodePath("Camera")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 6 )
@@ -66,22 +61,5 @@ shape = SubResource( 7 )
 
 [node name="PlayerInput" type="Node" parent="."]
 script = ExtResource( 4 )
-
-[node name="StateMachine" type="Node" parent="."]
-script = ExtResource( 6 )
-player_path = NodePath("..")
-input_path = NodePath("../PlayerInput")
-initial_state = NodePath("Move")
-
-[node name="Move" type="Node" parent="StateMachine"]
-script = ExtResource( 8 )
-idle_state_path = NodePath("../Idle")
-
-[node name="Idle" type="Node" parent="StateMachine"]
-script = ExtResource( 7 )
-move_state_path = NodePath("../Move")
-
-[node name="Camera" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63203, 0 )
 
 [editable path="yBot"]

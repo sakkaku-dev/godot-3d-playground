@@ -12,7 +12,8 @@ func exit():
 
 
 func handle_input(input: InputReader):
-	state_machine.player.motion = _get_move_vector(input)
+	pass
+#	state_machine.player.motion = _get_move_vector(input)
 
 
 func update(delta):
@@ -20,9 +21,3 @@ func update(delta):
 	if state_machine.player.velocity.length() <= 0.01:
 		state_machine.transition_to(idle_state)
 
-
-func _get_move_vector(input: InputReader) -> Vector2:
-	return Vector2(
-		input.get_action_strength("move_right") - input.get_action_strength("move_left"),
-		input.get_action_strength("move_back") - input.get_action_strength("move_forward")
-	)

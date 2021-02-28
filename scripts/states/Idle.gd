@@ -12,8 +12,9 @@ func exit():
 
 
 func handle_input(input: InputReader):
-	if input.is_pressed_any(PlayerInput.MOVE_INPUTS):
-		state_machine.transition_to(move_state)
+	pass
+#	if input.is_pressed_any(PlayerInput.MOVE_INPUTS):
+#		state_machine.transition_to(move_state)
 
 
 func update(delta: float):
