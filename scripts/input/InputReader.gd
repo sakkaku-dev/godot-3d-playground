@@ -1,32 +1,16 @@
 extends Node
 
 """
-Reads InputEvents and tracks which inputs are pressed
+Reads InputEvents and tracks which inputs are pressed for all devices
 """
 
 class_name InputReader
 
-const MOVE_LEFT := "move_left"
-const MOVE_RIGHT := "move_right"
-const MOVE_FORWARD := "move_forward"
-const MOVE_BACK := "move_back"
-const JUMP := "jump"
-
-const input_types = [MOVE_RIGHT, MOVE_LEFT, MOVE_FORWARD, MOVE_BACK, JUMP]
+var input_types = InputMap.get_actions()
 
 var just_pressed = []
 var inputs = []
-
-var action_strength = {
-	MOVE_LEFT: 0,
-	MOVE_RIGHT: 0,
-	MOVE_FORWARD: 0,
-	MOVE_BACK: 0,
-}
-
-
-func _unhandled_input(event):
-	handle_input(event)
+var action_strength = {}
 
 
 func handle_input(event: InputEvent) -> void:
@@ -52,7 +36,7 @@ func _process(delta):
 
 
 func _update_action_strength(event: InputEvent) -> void:
-	for k in action_strength.keys():
+	for k in input_types:
 		if event.is_action(k):
 			action_strength[k] = event.get_action_strength(k)
 
@@ -63,6 +47,13 @@ func _get_action_for_event(event: InputEvent) -> String:
 			return action
 
 	return ""
+
+
+func is_pressed_any(keys: Array) -> bool:
+	for k in keys:
+		if inputs.has(k):
+			return true
+	return false
 
 
 func is_pressed(keys: Array) -> bool:

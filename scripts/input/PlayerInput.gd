@@ -6,6 +6,8 @@ Input Reader for a single player
 
 class_name PlayerInput
 
+const MOVE_INPUTS = ["move_left", "move_right", "move_back", "move_forward"]
+
 export var joypad_input = false
 export var device_id = 0
 
@@ -31,9 +33,3 @@ func handle_input(event: InputEvent) -> void:
 		return
 	
 	.handle_input(event)
-
-func get_move_vector() -> Vector2:
-	return Vector2(
-		get_action_strength(MOVE_RIGHT) - get_action_strength(MOVE_LEFT),
-		get_action_strength(MOVE_BACK) - get_action_strength(MOVE_FORWARD)
-	)
