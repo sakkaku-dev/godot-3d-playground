@@ -11,6 +11,7 @@ onready var camera = get_node(camera_path)
 onready var gravity = ProjectSettings.get_setting("physics/3d/default_gravity") * ProjectSettings.get_setting("physics/3d/default_gravity_vector")
 onready var input := $PlayerInput
 onready var body = $Body
+onready var animation := $AnimationTree
 
 var velocity = Vector3.ZERO
 var orientation = Transform()
@@ -41,12 +42,14 @@ func _update_velocity(delta):
 	var target = camera.target_direction_for_motion(motion)
 	if target.length() > 0.01:
 		_rotate_to_target(target, delta)
+		
+	
+	animation.move(motion)
 	
 	var is_moving = target.length() > 0.01
 	var accel = acceleration if is_moving else friction
 	velocity = velocity.move_toward(target * speed, accel * delta)
 	velocity += gravity
-	
 	velocity = move_and_slide(velocity, Vector3.UP)
 
 	orientation.origin = Vector3()
