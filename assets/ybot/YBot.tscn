@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://assets/DefaultBot.gd" type="Script" id=1]
 [ext_resource path="res://assets/ybot/yBot.gltf" type="PackedScene" id=2]
@@ -6,51 +6,62 @@
 [ext_resource path="res://scripts/input/PlayerInput.gd" type="Script" id=4]
 [ext_resource path="res://assets/ybot/BotAnimation.gd" type="Script" id=5]
 
-[sub_resource type="AnimationNodeAnimation" id=1]
+[sub_resource type="AnimationNodeAnimation" id=18]
+animation = "Fall"
+
+[sub_resource type="AnimationNodeAnimation" id=12]
 animation = "Idle"
 
-[sub_resource type="AnimationNodeBlend2" id=2]
-
-[sub_resource type="AnimationNodeAnimation" id=3]
+[sub_resource type="AnimationNodeAnimation" id=13]
 animation = "Run"
 
-[sub_resource type="AnimationNodeAnimation" id=4]
-animation = "Walk"
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
+advance_condition = "run"
+xfade_time = 0.1
 
-[sub_resource type="AnimationNodeTransition" id=5]
-input_count = 2
-input_0/name = "walk"
-input_0/auto_advance = false
-input_1/name = "run"
-input_1/auto_advance = false
+[sub_resource type="AnimationNodeStateMachineTransition" id=15]
+advance_condition = "idle"
+xfade_time = 0.1
 
-[sub_resource type="AnimationNodeBlendTree" id=6]
-graph_offset = Vector2( -749, 23 )
-nodes/Idle/node = SubResource( 1 )
-nodes/Idle/position = Vector2( -320, 0 )
-nodes/Move/node = SubResource( 2 )
-nodes/Move/position = Vector2( 60, 40 )
-nodes/Run/node = SubResource( 3 )
-nodes/Run/position = Vector2( -320, 220 )
-nodes/Walk/node = SubResource( 4 )
-nodes/Walk/position = Vector2( -320, 120 )
-nodes/WalkRun/node = SubResource( 5 )
-nodes/WalkRun/position = Vector2( -120, 120 )
-nodes/output/position = Vector2( 500, 40 )
-node_connections = [ "output", 0, "Move", "WalkRun", 0, "Walk", "WalkRun", 1, "Run", "Move", 0, "Idle", "Move", 1, "WalkRun" ]
+[sub_resource type="AnimationNodeStateMachineTransition" id=27]
+advance_condition = "not_floor"
+xfade_time = 0.2
 
-[sub_resource type="CapsuleShape" id=7]
+[sub_resource type="AnimationNodeStateMachineTransition" id=28]
+advance_condition = "not_floor"
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=29]
+advance_condition = "floor"
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachine" id=16]
+states/Fall/node = SubResource( 18 )
+states/Fall/position = Vector2( 610, 257 )
+states/Idle/node = SubResource( 12 )
+states/Idle/position = Vector2( 492, 426 )
+states/Run/node = SubResource( 13 )
+states/Run/position = Vector2( 756, 426 )
+transitions = [ "Idle", "Run", SubResource( 14 ), "Run", "Idle", SubResource( 15 ), "Idle", "Fall", SubResource( 27 ), "Run", "Fall", SubResource( 28 ), "Fall", "Idle", SubResource( 29 ) ]
+start_node = "Idle"
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=17]
+
+[sub_resource type="CapsuleShape" id=11]
 radius = 0.325762
 
 [node name="YBot" type="KinematicBody"]
 script = ExtResource( 3 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 6 )
+tree_root = SubResource( 16 )
 anim_player = NodePath("../yBot/AnimationPlayer")
 active = true
-parameters/Move/blend_amount = 1.0
-parameters/WalkRun/current = 1
+parameters/playback = SubResource( 17 )
+parameters/conditions/floor = false
+parameters/conditions/idle = false
+parameters/conditions/not_floor = false
+parameters/conditions/run = false
 script = ExtResource( 5 )
 
 [node name="PlayerInput" type="Node" parent="."]
@@ -58,7 +69,7 @@ script = ExtResource( 4 )
 
 [node name="Body" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.878795, 0 )
-shape = SubResource( 7 )
+shape = SubResource( 11 )
 
 [node name="yBot" parent="." instance=ExtResource( 2 )]
 script = ExtResource( 1 )

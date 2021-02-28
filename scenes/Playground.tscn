@@ -11,6 +11,7 @@ data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1
 [node name="Playground" type="Spatial"]
 
 [node name="YBot" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12104, 0 )
 camera_path = NodePath("../Camera")
 
 [node name="RemoteTransform" type="RemoteTransform" parent="YBot"]
@@ -30,4 +31,4 @@ material/0 = null
 shape = SubResource( 2 )
 
 [node name="Camera" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66379, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.78483, 0 )

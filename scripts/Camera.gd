@@ -3,9 +3,9 @@ extends Spatial
 export var camera_length = 7
 export var camera_zoom_speed = 7
 
-const CAMERA_MOUSE_ROTATION_SPEED = 0.001
-const CAMERA_X_ROT_MIN = deg2rad(-40)
-const CAMERA_X_ROT_MAX = deg2rad(30)
+export(float, 0.1, 1) var mouse_sensitivity = .2
+export(float, -90, 0) var min_pitch = -80
+export(float, 0, 90) var max_pitch = 80
 
 onready var camera_base = $"."
 onready var camera_rot = $CameraRot
@@ -20,15 +20,9 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		var camera_speed = CAMERA_MOUSE_ROTATION_SPEED
-		_rotate_camera(event.relative * camera_speed)
-
-func _rotate_camera(move):
-	camera_base.rotate_y(-move.x)
-	camera_base.orthonormalize() # After relative transforms, camera needs to be renormalized.
-	camera_x_rot += move.y
-	camera_x_rot = clamp(camera_x_rot, CAMERA_X_ROT_MIN, CAMERA_X_ROT_MAX)
-	camera_rot.rotation.x = camera_x_rot
+		camera_base.rotation_degrees.y -= event.relative.x * mouse_sensitivity
+		camera_rot.rotation_degrees.x -= event.relative.y * mouse_sensitivity
+		camera_rot.rotation_degrees.x = clamp(camera_rot.rotation_degrees.x, min_pitch, max_pitch)
 	
 func _process(delta):
 	_adjust_spring_length(delta)
